@@ -1,0 +1,226 @@
+.section {
+  padding-block: var(--section-space);
+  overflow: hidden;
+  background: var(--sand);
+}
+
+.header {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+  align-items: end;
+  gap: clamp(40px, 8vw, 128px);
+  margin-bottom: clamp(36px, 5vw, 64px);
+}
+
+.header h2 {
+  margin: 0;
+  color: var(--green-dark);
+  font:
+    500 clamp(42px, 5.1vw, 78px)/1.02 "Playfair Display",
+    serif;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.intro {
+  padding-bottom: 4px;
+}
+
+.intro > p {
+  max-width: 510px;
+  margin: 0 0 22px;
+  color: #526058;
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+.pauseButton {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 9px;
+  padding: 0;
+  color: var(--green-dark);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: transparent;
+  border: 0;
+}
+
+.pauseButton svg {
+  width: 32px;
+  height: 32px;
+  padding: 8px;
+  border: 1px solid rgb(10 61 37 / 28%);
+  border-radius: 50%;
+  transition:
+    background var(--duration-fast),
+    color var(--duration-fast);
+}
+
+.pauseButton:hover svg {
+  color: var(--white);
+  background: var(--green-dark);
+}
+
+.viewport {
+  width: 100%;
+  overflow: hidden;
+}
+
+.track {
+  --card-gap: clamp(14px, 1.6vw, 24px);
+  display: flex;
+  width: max-content;
+  animation: delivery-marquee 48s linear infinite;
+  will-change: transform;
+}
+
+.group {
+  display: flex;
+  flex: none;
+  gap: var(--card-gap);
+  padding-right: var(--card-gap);
+}
+
+.group > div {
+  flex: none;
+  width: clamp(220px, 21vw, 330px);
+}
+
+.viewport:hover .track,
+.viewport:focus-within .track,
+.viewport[data-paused="true"] .track {
+  animation-play-state: paused;
+}
+
+.card {
+  min-width: 0;
+}
+
+.visual {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: #d7d7ce;
+  border-radius: 16px;
+}
+
+.visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.001);
+  transition: transform 700ms var(--ease-out);
+}
+
+.overlay {
+  position: absolute;
+  inset: auto 0 0;
+  padding: 64px 20px 20px;
+  color: var(--white);
+  background: linear-gradient(to top, rgb(8 29 18 / 72%), transparent);
+  opacity: 0;
+  transform: translateY(5px);
+  transition:
+    opacity 260ms ease,
+    transform 260ms var(--ease-out);
+}
+
+.overlay p {
+  margin: 0 0 5px;
+  font:
+    500 18px/1.25 "Playfair Display",
+    serif;
+}
+
+.overlay span {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.card:hover img {
+  transform: scale(1.035);
+}
+
+.card:hover .overlay {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@keyframes delivery-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 800px) {
+  .header {
+    grid-template-columns: 1fr;
+    align-items: start;
+    gap: 24px;
+  }
+
+  .header h2 br {
+    display: none;
+  }
+
+  .intro > p {
+    margin-bottom: 14px;
+  }
+
+  .group > div {
+    width: clamp(220px, 38vw, 292px);
+  }
+}
+
+@media (max-width: 620px) {
+  .header h2 {
+    font-size: clamp(38px, 12vw, 52px);
+  }
+
+  .track {
+    --card-gap: 14px;
+    animation-duration: 42s;
+  }
+
+  .group > div {
+    width: 72vw;
+  }
+
+  .visual {
+    border-radius: 14px;
+  }
+
+  .overlay {
+    padding: 56px 16px 16px;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pauseButton {
+    display: none;
+  }
+
+  .viewport {
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: thin;
+  }
+
+  .track {
+    padding-left: 16px;
+    animation: none;
+    will-change: auto;
+  }
+
+  .group[aria-hidden="true"] {
+    display: none;
+  }
+}
