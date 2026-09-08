@@ -1,10 +1,13 @@
 import { Heart, ShoppingBag } from "lucide-react";
 
 import ArrowLink from "../../../../components/ArrowLink/ArrowLink";
+import { useWishlist } from "../../../../context/WishlistContext";
+import { formatPrice, products as catalogProducts } from "../../../ProductListing/catalog";
 
 import styles from "./Products.module.css";
-import { featuredProducts as products } from "../../../../data/mockData";
 export default function Products() {
+  const wishlist = useWishlist();
+  const products = catalogProducts.slice(0, 4);
   return (
     <section className={`${styles.products} shell reveal`} id="products">
       <header className={styles.header}>
@@ -20,12 +23,12 @@ export default function Products() {
         {products.map((product, index) => (
           <article className={styles.product} key={product.id} style={{ "--delay": `${index * 45}ms` }}>
             <div className={styles.visual}>
-              <img src={product.image} alt={product.imageAlt} loading="lazy" />
+              <img src={product.image} alt={`Chăn ${product.name} trong không gian phòng ngủ`} loading="lazy" />
               {product.badge && <span className={styles.badge}>{product.badge}</span>}
-              <button className={styles.favorite} type="button" aria-label={`Thêm ${product.name} vào yêu thích`}><Heart size={19} aria-hidden="true" /></button>
+              <button className={styles.favorite} type="button" aria-label={`${wishlist.has(product.id) ? "Bỏ" : "Thêm"} ${product.name} ${wishlist.has(product.id) ? "khỏi" : "vào"} yêu thích`} aria-pressed={wishlist.has(product.id)} onClick={() => wishlist.toggle(product.id)}><Heart size={19} fill={wishlist.has(product.id) ? "currentColor" : "none"} aria-hidden="true" /></button>
               <button className={styles.addToCart} type="button"><ShoppingBag size={18} aria-hidden="true" />Thêm vào giỏ</button>
             </div>
-            <a href="#top"><span>{product.category}</span><h3>{product.name}</h3><b>{product.price}</b></a>
+            <a href={`/products/${product.id}`}><span>Bộ chăn ga</span><h3>{product.name}</h3><b>{formatPrice(product.price)}</b></a>
           </article>
         ))}
       </div>

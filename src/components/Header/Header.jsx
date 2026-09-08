@@ -4,6 +4,7 @@ import {
   ArrowRight,
   ArrowUpRight,
   ChevronDown,
+  Heart,
   Menu,
   Search,
   ShoppingBag,
@@ -11,6 +12,8 @@ import {
   X,
 } from "lucide-react";
 
+import { useAuth } from "../../context/AuthContext";
+import { useWishlist } from "../../context/WishlistContext";
 import styles from "./Header.module.css";
 import {
   headerCollections as collections,
@@ -20,9 +23,12 @@ import {
 } from "../../data/mockData";
 
 export default function Header() {
+  const { user, logout } = useAuth();
+  const wishlist = useWishlist();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCollectionOpen, setIsCollectionOpen] = useState(false);
   const [isProductOpen, setIsProductOpen] = useState(false);
+  const [isAccountOpen, setIsAccountOpen] = useState(false);
   const [activeCollectionId, setActiveCollectionId] = useState(
     collections[0].id,
   );
@@ -35,6 +41,7 @@ export default function Header() {
   const previewTimer = useRef(null);
   const productCloseTimer = useRef(null);
   const productPreviewTimer = useRef(null);
+  const accountCloseTimer = useRef(null);
   const activeCollection =
     collections.find(({ id }) => id === activeCollectionId) ?? collections[0];
   const activeProductType =
@@ -82,18 +89,33 @@ export default function Header() {
       delayed ? 130 : 0,
     );
   };
+  const openAccount = () => {
+    window.clearTimeout(accountCloseTimer.current);
+    setIsAccountOpen(true);
+    setIsCollectionOpen(false);
+    setIsProductOpen(false);
+  };
+  const scheduleAccountClose = () => {
+    window.clearTimeout(accountCloseTimer.current);
+    accountCloseTimer.current = window.setTimeout(
+      () => setIsAccountOpen(false),
+      240,
+    );
+  };
 
   useEffect(() => {
     const closeOnOutsidePointer = (event) => {
       if (!headerRef.current?.contains(event.target)) {
         setIsCollectionOpen(false);
         setIsProductOpen(false);
+        setIsAccountOpen(false);
       }
     };
     const closeOnEscape = (event) => {
       if (event.key === "Escape") {
         setIsCollectionOpen(false);
         setIsProductOpen(false);
+        setIsAccountOpen(false);
         if (headerRef.current?.contains(document.activeElement))
           document.activeElement?.blur();
       }
@@ -107,6 +129,7 @@ export default function Header() {
       window.clearTimeout(previewTimer.current);
       window.clearTimeout(productCloseTimer.current);
       window.clearTimeout(productPreviewTimer.current);
+      window.clearTimeout(accountCloseTimer.current);
     };
   }, []);
 
@@ -128,13 +151,88 @@ export default function Header() {
           EVERON
         </a>
         <div className={styles.actions}>
-          <button type="button" aria-label="Tài khoản">
-            <UserRound size={20} aria-hidden="true" />
-          </button>
           <button type="button" aria-label="Giỏ hàng" className={styles.cart}>
             <ShoppingBag size={20} aria-hidden="true" />
             <span>0</span>
           </button>
+          {user && <a className={styles.wishlistAction} href="/account/wishlist" aria-label={`Sản phẩm yêu thích, ${wishlist.count} sản phẩm`}>
+            <Heart size={20} aria-hidden="true" />
+            {wishlist.count > 0 && <span>{wishlist.count}</span>}
+          </a>}
+          <div
+            className={styles.account}
+            onPointerEnter={(event) =>
+              event.pointerType === "mouse" && openAccount()
+            }
+            onPointerLeave={(event) =>
+              event.pointerType === "mouse" && scheduleAccountClose()
+            }
+            onFocus={openAccount}
+            onBlur={(event) =>
+              !event.currentTarget.contains(event.relatedTarget) &&
+              scheduleAccountClose()
+            }
+          >
+            <button
+              type="button"
+              aria-label="Tài khoản"
+              aria-expanded={isAccountOpen}
+              aria-controls="account-menu"
+              onClick={() => setIsAccountOpen((current) => !current)}
+            >
+              <UserRound size={20} aria-hidden="true" />
+            </button>
+            <div
+              id="account-menu"
+              className={`${styles.accountMenu} ${isAccountOpen ? styles.accountMenuOpen : ""}`}
+              onPointerEnter={() =>
+                window.clearTimeout(accountCloseTimer.current)
+              }
+              onPointerLeave={scheduleAccountClose}
+            >
+              <p>{user ? `Xin chào, ${user.firstName}` : "Tài khoản"}</p>
+              {user ? (
+                <>
+                  <a href="/account/profile">
+                    Thông tin tài khoản{" "}
+                    <ArrowRight size={15} aria-hidden="true" />
+                  </a>
+                  <a href="/account/orders">
+                    Quản lý đơn hàng{" "}
+                    <ArrowRight size={15} aria-hidden="true" />
+                  </a>
+                  <button type="button" onClick={async () => { await logout(); window.location.assign("/"); }}>
+                    Đăng xuất <ArrowRight size={15} aria-hidden="true" />
+                  </button>
+                </>
+              ) : (
+                <>
+                  <a
+                    href="/login"
+                    onClick={() =>
+                      sessionStorage.setItem(
+                        "everon_auth_return",
+                        `${window.location.pathname}${window.location.search}`,
+                      )
+                    }
+                  >
+                    Đăng nhập <ArrowRight size={15} aria-hidden="true" />
+                  </a>
+                  <a
+                    href="/register"
+                    onClick={() =>
+                      sessionStorage.setItem(
+                        "everon_auth_return",
+                        `${window.location.pathname}${window.location.search}`,
+                      )
+                    }
+                  >
+                    Đăng ký <ArrowRight size={15} aria-hidden="true" />
+                  </a>
+                </>
+              )}
+            </div>
+          </div>
           <button
             className={styles.menuButton}
             type="button"
@@ -142,6 +240,7 @@ export default function Header() {
               setIsMenuOpen((current) => !current);
               setIsCollectionOpen(false);
               setIsProductOpen(false);
+              setIsAccountOpen(false);
               setMobileProductTypeId(null);
             }}
             aria-label={isMenuOpen ? "Đóng menu" : "Mở menu"}
@@ -346,9 +445,7 @@ export default function Header() {
                         onFocus={() =>
                           previewProductType(productType.id, false)
                         }
-                        onClick={() =>
-                          window.location.assign(productType.href)
-                        }
+                        onClick={() => window.location.assign(productType.href)}
                       >
                         <Icon size={21} strokeWidth={1.55} aria-hidden="true" />
                         <span>{productType.name}</span>

@@ -1,0 +1,741 @@
+.page {
+  display: grid;
+  min-height: 100dvh;
+  background: var(--cream);
+}
+.formPanel {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  padding: 24px 20px 48px;
+}
+.authHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.logo {
+  color: var(--green);
+  font:
+    600 23px "Playfair Display",
+    serif;
+  letter-spacing: 0.28em;
+}
+.back {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 13px;
+  transition: color var(--duration-fast);
+}
+.back:hover {
+  color: var(--green);
+}
+.formShell {
+  width: 100%;
+  max-width: 470px;
+  margin: auto;
+  padding-block: 40px;
+}
+.intro {
+  margin-bottom: 30px;
+}
+.intro h1,
+.success h1 {
+  margin: 0;
+  color: var(--ink);
+  font:
+    500 clamp(34px, 4vw, 48px)/1.12 "Playfair Display",
+    serif;
+  letter-spacing: -0.025em;
+}
+.intro > p:last-child,
+.success > p {
+  max-width: 440px;
+  margin: 14px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.7;
+}
+.intro strong {
+  color: var(--ink);
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.demoNote {
+  margin: 0 0 22px;
+  padding: 9px 12px;
+  color: #48604d;
+  font-size: 11px;
+  line-height: 1.5;
+  background: var(--green-soft);
+  border-left: 2px solid var(--sage);
+}
+.field {
+  display: grid;
+  margin-bottom: 20px;
+  gap: 8px;
+}
+.field > label {
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 600;
+}
+.inputWrap {
+  position: relative;
+}
+.inputWrap input {
+  width: 100%;
+  height: 52px;
+  padding: 0 16px;
+  color: var(--ink);
+  font-size: 16px;
+  background: var(--white);
+  border: 1px solid #cfd7ce;
+  border-radius: 8px;
+  outline: 0;
+  transition:
+    border-color var(--duration-fast),
+    box-shadow var(--duration-fast);
+}
+.inputWrap input::placeholder {
+  color: #929991;
+}
+.inputWrap input:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px rgb(23 75 32 / 10%);
+}
+.inputWrap:has(.passwordToggle) input {
+  padding-right: 54px;
+}
+.inputError input {
+  border-color: #a94b42;
+}
+.passwordToggle {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  color: var(--muted);
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+}
+.passwordToggle:hover {
+  color: var(--green);
+  background: var(--green-soft);
+}
+.fieldError,
+.otpError {
+  color: #9b3f38;
+  font-size: 12px;
+  line-height: 1.45;
+}
+.helper {
+  color: var(--muted);
+  font-size: 12px;
+}
+.formError {
+  margin-bottom: 20px;
+  padding: 12px 14px;
+  color: #873c35;
+  font-size: 13px;
+  line-height: 1.5;
+  background: #faf0ed;
+  border-left: 2px solid #a94b42;
+}
+.primaryButton {
+  display: flex;
+  width: 100%;
+  min-height: 52px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 20px;
+  gap: 9px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-align: center;
+  text-transform: uppercase;
+  background: var(--green);
+  border: 1px solid var(--green);
+  border-radius: 8px;
+  transition:
+    background var(--duration-fast),
+    transform var(--duration-fast),
+    opacity var(--duration-fast);
+}
+.primaryButton:hover {
+  background: var(--green-dark);
+}
+.primaryButton:active {
+  transform: scale(0.985);
+}
+.primaryButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+.spinner {
+  animation: spin 0.8s linear infinite;
+}
+.switch {
+  margin: 24px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
+}
+.switch a,
+.formOptions a,
+.resend button {
+  color: var(--green);
+  font-weight: 600;
+}
+.switch a:hover,
+.formOptions a:hover,
+.resend button:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.formOptions {
+  display: flex;
+  min-height: 44px;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin: -2px 0 18px;
+  gap: 20px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.formOptions label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.formOptions input {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: var(--green);
+}
+.progress {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 0 0 38px;
+  padding: 0;
+  list-style: none;
+}
+.progress li {
+  position: relative;
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+  color: #949b94;
+}
+.progress li:not(:last-child)::after {
+  position: absolute;
+  top: 13px;
+  right: 9px;
+  left: 36px;
+  height: 1px;
+  background: var(--line);
+  content: "";
+}
+.progress li > span {
+  display: grid;
+  width: 27px;
+  height: 27px;
+  place-items: center;
+  font-size: 10px;
+  font-weight: 700;
+  background: var(--cream);
+  border: 1px solid #cbd3ca;
+  border-radius: 50%;
+  z-index: 1;
+}
+.progress li small {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.progressActive {
+  color: var(--green) !important;
+}
+.progressActive > span {
+  color: #fff;
+  background: var(--green) !important;
+  border-color: var(--green) !important;
+}
+.progressActive:not(:last-child)::after {
+  background: var(--sage) !important;
+}
+.requirements {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -8px 0 19px;
+  padding: 0;
+  gap: 7px 13px;
+  color: #879087;
+  font-size: 11px;
+  list-style: none;
+}
+.requirements li {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.requirements svg {
+  color: #a5aba5;
+}
+.requirements .met {
+  color: var(--green);
+}
+.requirements .met svg {
+  color: var(--green);
+}
+.otp {
+  position: relative;
+  margin: 4px 0 10px;
+  cursor: text;
+}
+.otpNativeInput {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  color: transparent;
+  background: transparent;
+  border: 0;
+  caret-color: transparent;
+  opacity: 0.01;
+  outline: 0;
+}
+.otpSlots {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: clamp(7px, 2vw, 12px);
+  pointer-events: none;
+}
+.otpSlot {
+  display: grid;
+  min-width: 0;
+  aspect-ratio: 1/1.08;
+  place-items: center;
+  color: var(--ink);
+  font-size: clamp(20px, 5vw, 26px);
+  font-weight: 600;
+  background: #fff;
+  border: 1px solid #cfd7ce;
+  border-radius: 8px;
+  transition:
+    border-color var(--duration-fast),
+    box-shadow var(--duration-fast);
+}
+.otp:focus-within .otpSlotActive {
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px rgb(23 75 32 / 10%);
+}
+.otp:focus-within .otpSlotActive::after {
+  width: 1px;
+  height: 24px;
+  background: var(--green);
+  content: "";
+  animation: otp-caret 1s steps(1) infinite;
+}
+.otpInvalid .otpSlot {
+  border-color: #a94b42;
+}
+.otpError {
+  margin: 0 0 16px;
+}
+.notice {
+  margin: 0 0 16px;
+  color: var(--green);
+  font-size: 12px;
+}
+.resend {
+  display: grid;
+  justify-items: center;
+  margin: 22px 0 12px;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.resend button,
+.textButton {
+  min-height: 36px;
+  padding: 0;
+  color: var(--green);
+  background: transparent;
+  border: 0;
+}
+.resend button:disabled {
+  color: var(--muted);
+  cursor: default;
+  text-decoration: none;
+}
+.textButton {
+  display: flex;
+  align-items: center;
+  margin-inline: auto;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.nameGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.gender {
+  margin: 0 0 24px;
+  padding: 0;
+  border: 0;
+}
+.gender legend {
+  margin-bottom: 12px;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 600;
+}
+.gender legend span {
+  color: var(--muted);
+  font-weight: 400;
+}
+.gender > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+.gender label {
+  position: relative;
+}
+.gender input {
+  position: absolute;
+  opacity: 0;
+}
+.gender label span {
+  display: flex;
+  min-height: 42px;
+  align-items: center;
+  padding: 0 14px;
+  color: var(--muted);
+  font-size: 12px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  cursor: pointer;
+}
+.gender input:checked + span {
+  color: var(--green-dark);
+  background: var(--green-soft);
+  border-color: var(--sage);
+}
+.gender input:focus-visible + span {
+  outline: 3px solid #6da43f;
+  outline-offset: 3px;
+}
+.success {
+  text-align: center;
+  animation: success-in 460ms var(--ease-out) both;
+}
+.successIcon {
+  display: grid;
+  width: 64px;
+  height: 64px;
+  place-items: center;
+  margin: 0 auto 24px;
+  color: #fff;
+  background: var(--green);
+  border-radius: 50%;
+}
+.success .primaryButton {
+  margin-top: 32px;
+}
+.success :global(.eyebrow) {
+  margin-bottom: 12px;
+}
+.visual {
+  position: relative;
+  display: none;
+  min-width: 0;
+  overflow: hidden;
+  background: var(--green-dark);
+}
+.visual::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 42%, rgb(7 33 20 / 76%));
+  content: "";
+}
+.visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.visual > div {
+  position: absolute;
+  right: clamp(32px, 6vw, 80px);
+  bottom: clamp(40px, 8vh, 96px);
+  left: clamp(32px, 6vw, 80px);
+  z-index: 1;
+  max-width: 590px;
+  color: #fff;
+}
+.visual p {
+  margin: 0 0 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.visual h2 {
+  margin: 0;
+  font:
+    500 clamp(34px, 4vw, 60px)/1.12 "Playfair Display",
+    serif;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes otp-caret {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes success-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (min-width: 860px) {
+  .page {
+    grid-template-columns: minmax(440px, 42%) minmax(0, 58%);
+  }
+  .formPanel {
+    padding: 28px clamp(32px, 4.5vw, 72px) 56px;
+  }
+  .visual {
+    display: block;
+  }
+  .formShell {
+    padding-block: 56px;
+  }
+}
+@media (max-width: 520px) {
+  .formPanel {
+    padding-inline: 16px;
+  }
+  .authHeader {
+    align-items: flex-start;
+  }
+  .back {
+    font-size: 0;
+  }
+  .back svg {
+    width: 20px;
+    height: 20px;
+  }
+  .nameGrid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .progress li small {
+    font-size: 9px;
+  }
+  .intro h1,
+  .success h1 {
+    font-size: 34px;
+  }
+  .gender > div {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .gender label span {
+    justify-content: center;
+    text-align: center;
+  }
+  .demoNote {
+    font-size: 10px;
+  }
+}
+
+/* Keep authentication steps within a standard desktop viewport. */
+@media (min-width: 860px) {
+  .page {
+    height: 100dvh;
+    min-height: 620px;
+    overflow: hidden;
+  }
+  .formPanel {
+    height: 100%;
+    min-height: 0;
+    padding: 18px clamp(28px, 4vw, 60px) 24px;
+  }
+  .authHeader,
+  .back {
+    min-height: 40px;
+  }
+  .formShell {
+    max-width: 450px;
+    padding-block: 10px;
+  }
+  .visual {
+    height: 100%;
+  }
+  .progress {
+    margin-bottom: 20px;
+  }
+  .demoNote {
+    margin-bottom: 12px;
+    padding-block: 6px;
+  }
+  .intro {
+    margin-bottom: 18px;
+  }
+  .intro h1,
+  .success h1 {
+    font-size: clamp(31px, 3vw, 41px);
+    line-height: 1.08;
+  }
+  .intro > p:last-child,
+  .success > p {
+    margin-top: 9px;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .field {
+    margin-bottom: 13px;
+    gap: 5px;
+  }
+  .inputWrap input {
+    height: 46px;
+  }
+  .passwordToggle {
+    top: 1px;
+  }
+  .requirements {
+    margin-bottom: 13px;
+  }
+  .primaryButton {
+    min-height: 48px;
+  }
+  .switch {
+    margin-top: 16px;
+  }
+  .formOptions {
+    min-height: 38px;
+    margin-bottom: 11px;
+  }
+  .gender {
+    margin-bottom: 16px;
+  }
+  .resend {
+    margin: 15px 0 7px;
+  }
+}
+
+@media (min-width: 860px) and (max-height: 700px) {
+  .formPanel {
+    padding-block: 12px 16px;
+  }
+  .formShell {
+    max-width: 425px;
+    padding-block: 4px;
+  }
+  .progress {
+    margin-bottom: 12px;
+  }
+  .progress li {
+    gap: 3px;
+  }
+  .demoNote {
+    margin-bottom: 7px;
+    padding-block: 4px;
+  }
+  .intro {
+    margin-bottom: 11px;
+  }
+  .intro :global(.eyebrow) {
+    margin-bottom: 6px;
+  }
+  .intro h1,
+  .success h1 {
+    font-size: 29px;
+  }
+  .intro > p:last-child,
+  .success > p {
+    margin-top: 6px;
+    line-height: 1.35;
+  }
+  .field {
+    margin-bottom: 8px;
+    gap: 3px;
+  }
+  .inputWrap input {
+    height: 44px;
+  }
+  .passwordToggle {
+    top: 0;
+  }
+  .requirements {
+    margin: -3px 0 8px;
+  }
+  .primaryButton {
+    min-height: 44px;
+  }
+  .switch {
+    margin-top: 10px;
+  }
+  .gender {
+    margin-bottom: 10px;
+  }
+}
+
+@media (max-width: 520px) and (min-height: 680px) {
+  .formPanel {
+    padding: 12px 16px 18px;
+  }
+  .formShell {
+    padding-block: 12px;
+  }
+  .progress {
+    margin-bottom: 20px;
+  }
+  .intro {
+    margin-bottom: 18px;
+  }
+  .field {
+    margin-bottom: 13px;
+  }
+  .inputWrap input {
+    height: 48px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .success,
+  .spinner {
+    animation: none;
+  }
+}

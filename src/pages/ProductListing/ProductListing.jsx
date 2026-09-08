@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight, Check, ChevronDown, SlidersHorizontal, X } from 'lucide-react';
 import { productTypes } from '../../data/mockData';
+import { useWishlist } from '../../context/WishlistContext';
 import FilterPanel from './components/FilterPanel';
 import ListingProductCard from './components/ListingProductCard';
 import useCatalogQuery from './hooks/useCatalogQuery';
@@ -20,7 +21,7 @@ export default function ProductListing() {
   const currentPage = Math.min(page, pages);
   const visible = results.slice((currentPage - 1) * 9, currentPage * 9);
   const chips = filterGroups.flatMap(group => group.options.filter(option => filters[group.id]?.includes(option.value)).map(option => ({ ...option, group: group.id })));
-  const [favorites, setFavorites] = useState(() => { try { const saved = JSON.parse(localStorage.getItem('everon-wishlist') || '[]'); return Array.isArray(saved) ? saved : []; } catch { return []; } });
+  const wishlist = useWishlist();
   const [draft, setDraft] = useState(null);
   const dialog = useRef(null);
   const sortMenu = useRef(null);
@@ -71,7 +72,7 @@ export default function ProductListing() {
           </details>
         </div>
         {chips.length > 0 && <div className={styles.chips}><span>Đang lọc:</span>{chips.map(chip => <button key={`${chip.group}-${chip.value}`} onClick={() => update({ [chip.group]: filters[chip.group].filter(value => value !== chip.value) })} aria-label={`Bỏ bộ lọc ${chip.label}`}>{chip.label}<X size={13} aria-hidden="true" /></button>)}<button className={styles.clearChip} onClick={clear}>Xóa tất cả</button></div>}
-        {visible.length ? <div className={styles.grid}>{visible.map((product, index) => <ListingProductCard key={product.id} product={product} index={index} favorite={favorites.includes(product.id)} onFavorite={() => { const next = favorites.includes(product.id) ? favorites.filter(id => id !== product.id) : [...favorites, product.id]; setFavorites(next); try { localStorage.setItem('everon-wishlist', JSON.stringify(next)); } catch { /* Keep session state if storage is unavailable. */ } }} />)}</div> : <div className={styles.empty}><SlidersHorizontal size={30} strokeWidth={1} aria-hidden="true" /><h2>Không tìm thấy sản phẩm phù hợp</h2><p>Thử thay đổi hoặc xóa một số bộ lọc để xem thêm sản phẩm.</p>{chips.length ? <button className={styles.primary} onClick={clear}>Xóa bộ lọc</button> : <a className={styles.primary} href="/products?type=bedding&category=duvet">Khám phá chăn và vỏ chăn</a>}</div>}
+        {visible.length ? <div className={styles.grid}>{visible.map((product, index) => <ListingProductCard key={product.id} product={product} index={index} favorite={wishlist.has(product.id)} onFavorite={() => wishlist.toggle(product.id)} />)}</div> : <div className={styles.empty}><SlidersHorizontal size={30} strokeWidth={1} aria-hidden="true" /><h2>Không tìm thấy sản phẩm phù hợp</h2><p>Thử thay đổi hoặc xóa một số bộ lọc để xem thêm sản phẩm.</p>{chips.length ? <button className={styles.primary} onClick={clear}>Xóa bộ lọc</button> : <a className={styles.primary} href="/products?type=bedding&category=duvet">Khám phá chăn và vỏ chăn</a>}</div>}
         {results.length > 0 && <footer className={styles.pagination}><p>Hiển thị {(currentPage - 1) * 9 + 1}–{Math.min(currentPage * 9, results.length)} trong {results.length} sản phẩm</p><nav aria-label="Phân trang">{currentPage > 1 && <a href={pageHref(currentPage - 1)} onClick={event => changePage(event, currentPage - 1)} aria-label="Trang trước"><ArrowLeft size={17} /></a>}{Array.from({ length: pages }, (_, i) => i + 1).map(number => <a key={number} href={pageHref(number)} onClick={event => changePage(event, number)} aria-label={`Trang ${number}`} aria-current={number === currentPage ? 'page' : undefined}>{number}</a>)}{currentPage < pages && <a href={pageHref(currentPage + 1)} onClick={event => changePage(event, currentPage + 1)} aria-label="Trang sau"><ArrowRight size={17} /></a>}</nav></footer>}
       </section>
     </div>
