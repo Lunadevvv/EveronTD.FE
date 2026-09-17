@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 
 import { useAuth } from "../../context/AuthContext";
+import { useCart } from "../../context/CartContext";
 import { useWishlist } from "../../context/WishlistContext";
 import styles from "./Header.module.css";
 import {
@@ -25,6 +26,7 @@ import {
 export default function Header() {
   const { user, logout } = useAuth();
   const wishlist = useWishlist();
+  const cart = useCart();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCollectionOpen, setIsCollectionOpen] = useState(false);
   const [isProductOpen, setIsProductOpen] = useState(false);
@@ -153,7 +155,7 @@ export default function Header() {
         <div className={styles.actions}>
           <button type="button" aria-label="Giỏ hàng" className={styles.cart}>
             <ShoppingBag size={20} aria-hidden="true" />
-            <span>0</span>
+            <span>{cart.count}</span>
           </button>
           {user && <a className={styles.wishlistAction} href="/account/wishlist" aria-label={`Sản phẩm yêu thích, ${wishlist.count} sản phẩm`}>
             <Heart size={20} aria-hidden="true" />

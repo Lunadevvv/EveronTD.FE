@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 
 import App from "./App";
 import { AuthProvider } from "./context/AuthContext";
+import { CartProvider } from "./context/CartContext";
 import { WishlistProvider } from "./context/WishlistContext";
 
 import "./styles/globals.css";
@@ -10,9 +11,11 @@ import "./styles/globals.css";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <AuthProvider>
-      <WishlistProvider>
-        <App />
-      </WishlistProvider>
+      <CartProvider>
+        <WishlistProvider>
+          <App />
+        </WishlistProvider>
+      </CartProvider>
     </AuthProvider>
   </StrictMode>,
 );
